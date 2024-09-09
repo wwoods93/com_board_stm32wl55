@@ -1,0 +1,2 @@
+../LoRaWAN/App/lora_app.c:67:6:InitPackageProcess	1
+../LoRaWAN/App/lora_app.c:78:6:OnMacProcessNotify	1
