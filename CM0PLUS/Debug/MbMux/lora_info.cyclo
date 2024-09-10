@@ -1,0 +1,3 @@
+../MbMux/lora_info.c:75:6:LoraInfo_Init	2
+../MbMux/lora_info.c:149:13:LoraInfo_GetPtr	1
+../MbMux/lora_info.c:162:6:StoreValueInFeatureListTable	5

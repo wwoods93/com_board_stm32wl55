@@ -1,0 +1,7 @@
+../MbMux/mbmuxif_lora.c:97:8:MBMUXIF_LoraInit	8
+../MbMux/mbmuxif_lora.c:152:19:MBMUXIF_GetLoraFeatureCmdComPtr	2
+../MbMux/mbmuxif_lora.c:168:6:MBMUXIF_LoraSendCmd	2
+../MbMux/mbmuxif_lora.c:186:6:MBMUXIF_LoraSendAck	2
+../MbMux/mbmuxif_lora.c:205:13:MBMUXIF_IsrLoraRespRcvCb	1
+../MbMux/mbmuxif_lora.c:216:13:MBMUXIF_IsrLoraNotifRcvCb	1
+../MbMux/mbmuxif_lora.c:228:13:MBMUXIF_TaskLoraNotifRcv	1
