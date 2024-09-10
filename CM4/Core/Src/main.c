@@ -33,7 +33,8 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-
+#define RX_SIZE					2U
+#define I2C_SEND_INTERVAL_US	500000U
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -41,21 +42,29 @@
 
 void I2C1_EV_IRQHandler(void)
 {
-  /* USER CODE BEGIN I2C1_EV_IRQn 0 */
 
-  /* USER CODE END I2C1_EV_IRQn 0 */
   HAL_I2C_EV_IRQHandler(&hi2c1);
-  /* USER CODE BEGIN I2C1_EV_IRQn 1 */
 
-  /* USER CODE END I2C1_EV_IRQn 1 */
 }
+
+
+
+uint32_t get_timer_2_count();
 
 void hal_callback_i2c_master_tx_complete(I2C_HandleTypeDef *hi2c);
 void hal_callback_i2c_master_rx_complete(I2C_HandleTypeDef *hi2c);
+void hal_callback_i2c_listen_complete(I2C_HandleTypeDef *hi2c);
+void hal_callback_i2c_error(I2C_HandleTypeDef *hi2c);
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
+uint8_t i2c_rx_data[RX_SIZE];
+  uint8_t rx_bytes[RX_SIZE] = { 0x00, 0x00  };
+  uint8_t i2c_tx_data[5] = { 0x01, 0x05, 0x06, 0x0A, 0x01 };
+  uint8_t received = 1U;
+  uint32_t timeout_count = 0U;
 
 /* USER CODE END PM */
 
@@ -116,8 +125,13 @@ int main(void)
 
   uint32_t count = 0U;
   uint8_t sent = 0U;
-  uint8_t i2c_data[5] = { 0x01, 0x05, 0x06, 0x0A, 0x01 };
+
+
+  const uint32_t TIMEOUT = 8000000U;
+
+
   HAL_StatusTypeDef i2c_status;
+
   /* USER CODE END 2 */
 
   /* Boot CPU2 */
@@ -125,25 +139,37 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+
+  HAL_I2C_RegisterCallback(&hi2c1, HAL_I2C_MASTER_TX_COMPLETE_CB_ID, hal_callback_i2c_master_tx_complete);
+  HAL_I2C_RegisterCallback(&hi2c1, HAL_I2C_MASTER_RX_COMPLETE_CB_ID, hal_callback_i2c_master_rx_complete);
+  HAL_I2C_RegisterCallback(&hi2c1, HAL_I2C_LISTEN_COMPLETE_CB_ID, hal_callback_i2c_listen_complete);
+
+  HAL_TIM_Base_Start(&htim2);
+
   while (1)
   {
 
+//
+//	  i2c_rx_data[0] = 0x00;
+//	  i2c_rx_data[1] = 0x00;
 
 
-	  if (count > 100000 && sent == 0U)
+	  	  if (get_timer_2_count() - count > I2C_SEND_INTERVAL_US)
 	  	  {
-	  		  i2c_data[0] = 0x01;
-	  		  i2c_status = HAL_I2C_Master_Transmit_IT(&hi2c1, (0x14 << 1), i2c_data, 5);
-	  		  sent = 1U;
+	  		  if (HAL_I2C_Master_Transmit_IT(&hi2c1, (0x14 << 1), i2c_tx_data, 5) == HAL_OK)
+			  {
+	  			  count = get_timer_2_count();
+			  }
+
 	  	  }
-	  	  else if (count > 200000 && sent == 1U)
-	  	  {
-	  		  i2c_data[0] = 0x07;
-	  		  i2c_status = HAL_I2C_Master_Transmit_IT(&hi2c1, (0x14 << 1), i2c_data, 5);
-	  		  sent = 0U;
-	  		  count = 0U;
-	  	  }
-	  	  ++count;
+
+
+
+
+
+
+
+
     /* USER CODE END WHILE */
 //    MX_LoRaWAN_Process();
 
@@ -199,15 +225,32 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+
+uint32_t get_timer_2_count()
+{
+	return htim2.Instance->CNT;
+}
+
 void hal_callback_i2c_master_tx_complete(I2C_HandleTypeDef *hi2c)
 {
-
+//	HAL_I2C_Master_Receive_IT(&hi2c1, (0x14 << 1), i2c_rx_data, RX_SIZE);
+//	timeout_count = 0U;
 }
 
 void hal_callback_i2c_master_rx_complete(I2C_HandleTypeDef *hi2c)
 {
+	for (uint8_t index = 0; 0 < RX_SIZE; ++index)
+	{
+		rx_bytes[index] = i2c_rx_data[index];
+	}
+//	received = 1U;
+}
+
+void hal_callback_i2c_listen_complete(I2C_HandleTypeDef *hi2c)
+{
 
 }
+
 /* USER CODE END 4 */
 
 /**
