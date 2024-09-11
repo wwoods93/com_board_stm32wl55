@@ -40,7 +40,7 @@ void MX_I2C1_Init(void)
 
   /* USER CODE END I2C1_Init 1 */
   hi2c1.Instance = I2C1;
-  hi2c1.Init.Timing = 0x00707DBD;
+  hi2c1.Init.Timing = 0x00707CBB;
   hi2c1.Init.OwnAddress1 = 32;
   hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
   hi2c1.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
@@ -55,7 +55,7 @@ void MX_I2C1_Init(void)
 
   /** Configure Analogue filter
   */
-  if (HAL_I2CEx_ConfigAnalogFilter(&hi2c1, I2C_ANALOGFILTER_DISABLE) != HAL_OK)
+  if (HAL_I2CEx_ConfigAnalogFilter(&hi2c1, I2C_ANALOGFILTER_ENABLE) != HAL_OK)
   {
     Error_Handler();
   }
@@ -233,9 +233,9 @@ void HAL_I2C_MspInit(I2C_HandleTypeDef* i2cHandle)
     __HAL_RCC_I2C2_CLK_ENABLE();
 
     /* I2C2 interrupt Init */
-    HAL_NVIC_SetPriority(I2C2_EV_IRQn, 2, 0);
+    HAL_NVIC_SetPriority(I2C2_EV_IRQn, 0, 0);
     HAL_NVIC_EnableIRQ(I2C2_EV_IRQn);
-    HAL_NVIC_SetPriority(I2C2_ER_IRQn, 2, 0);
+    HAL_NVIC_SetPriority(I2C2_ER_IRQn, 0, 0);
     HAL_NVIC_EnableIRQ(I2C2_ER_IRQn);
   /* USER CODE BEGIN I2C2_MspInit 1 */
 

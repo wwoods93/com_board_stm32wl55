@@ -60,6 +60,7 @@ extern I2C_HandleTypeDef hi2c2;
 extern I2C_HandleTypeDef hi2c3;
 extern IPCC_HandleTypeDef hipcc;
 extern SPI_HandleTypeDef hspi1;
+extern SPI_HandleTypeDef hspi2;
 extern UART_HandleTypeDef huart1;
 /* USER CODE BEGIN EV */
 
@@ -204,6 +205,20 @@ void SysTick_Handler(void)
 /******************************************************************************/
 
 /**
+  * @brief This function handles FLASH (CFI) global Interrupt.
+  */
+void FLASH_IRQHandler(void)
+{
+  /* USER CODE BEGIN FLASH_IRQn 0 */
+
+  /* USER CODE END FLASH_IRQn 0 */
+  HAL_FLASH_IRQHandler();
+  /* USER CODE BEGIN FLASH_IRQn 1 */
+
+  /* USER CODE END FLASH_IRQn 1 */
+}
+
+/**
   * @brief This function handles RCC Interrupt.
   */
 void RCC_IRQHandler(void)
@@ -222,69 +237,83 @@ void RCC_IRQHandler(void)
 //void I2C1_EV_IRQHandler(void)
 //{
 //  /* USER CODE BEGIN I2C1_EV_IRQn 0 */
-//////
+//////////
 //  /* USER CODE END I2C1_EV_IRQn 0 */
 //  HAL_I2C_EV_IRQHandler(&hi2c1);
 //  /* USER CODE BEGIN I2C1_EV_IRQn 1 */
-//////
+//////////
 //  /* USER CODE END I2C1_EV_IRQn 1 */
 //}
-
-/**
-  * @brief This function handles I2C1 Error Interrupt.
-  */
-void I2C1_ER_IRQHandler(void)
-{
-  /* USER CODE BEGIN I2C1_ER_IRQn 0 */
-
-  /* USER CODE END I2C1_ER_IRQn 0 */
-  HAL_I2C_ER_IRQHandler(&hi2c1);
-  /* USER CODE BEGIN I2C1_ER_IRQn 1 */
-
-  /* USER CODE END I2C1_ER_IRQn 1 */
-}
-
-/**
-  * @brief This function handles I2C2 Event Interrupt.
-  */
-void I2C2_EV_IRQHandler(void)
-{
-  /* USER CODE BEGIN I2C2_EV_IRQn 0 */
-
-  /* USER CODE END I2C2_EV_IRQn 0 */
-  HAL_I2C_EV_IRQHandler(&hi2c2);
-  /* USER CODE BEGIN I2C2_EV_IRQn 1 */
-
-  /* USER CODE END I2C2_EV_IRQn 1 */
-}
-
-/**
-  * @brief This function handles I2C2 Error Interrupt.
-  */
-void I2C2_ER_IRQHandler(void)
-{
-  /* USER CODE BEGIN I2C2_ER_IRQn 0 */
-
-  /* USER CODE END I2C2_ER_IRQn 0 */
-  HAL_I2C_ER_IRQHandler(&hi2c2);
-  /* USER CODE BEGIN I2C2_ER_IRQn 1 */
-
-  /* USER CODE END I2C2_ER_IRQn 1 */
-}
-
-/**
-  * @brief This function handles SPI1 Interrupt.
-  */
-void SPI1_IRQHandler(void)
-{
-  /* USER CODE BEGIN SPI1_IRQn 0 */
-
-  /* USER CODE END SPI1_IRQn 0 */
-  HAL_SPI_IRQHandler(&hspi1);
-  /* USER CODE BEGIN SPI1_IRQn 1 */
-
-  /* USER CODE END SPI1_IRQn 1 */
-}
+//
+///**
+//  * @brief This function handles I2C1 Error Interrupt.
+//  */
+//void I2C1_ER_IRQHandler(void)
+//{
+//  /* USER CODE BEGIN I2C1_ER_IRQn 0 */
+////
+//  /* USER CODE END I2C1_ER_IRQn 0 */
+//  HAL_I2C_ER_IRQHandler(&hi2c1);
+//  /* USER CODE BEGIN I2C1_ER_IRQn 1 */
+////
+//  /* USER CODE END I2C1_ER_IRQn 1 */
+//}
+//
+///**
+//  * @brief This function handles I2C2 Event Interrupt.
+//  */
+//void I2C2_EV_IRQHandler(void)
+//{
+//  /* USER CODE BEGIN I2C2_EV_IRQn 0 */
+////
+//  /* USER CODE END I2C2_EV_IRQn 0 */
+//  HAL_I2C_EV_IRQHandler(&hi2c2);
+//  /* USER CODE BEGIN I2C2_EV_IRQn 1 */
+////
+//  /* USER CODE END I2C2_EV_IRQn 1 */
+//}
+//
+///**
+//  * @brief This function handles I2C2 Error Interrupt.
+//  */
+//void I2C2_ER_IRQHandler(void)
+//{
+//  /* USER CODE BEGIN I2C2_ER_IRQn 0 */
+////
+//  /* USER CODE END I2C2_ER_IRQn 0 */
+//  HAL_I2C_ER_IRQHandler(&hi2c2);
+//  /* USER CODE BEGIN I2C2_ER_IRQn 1 */
+////
+//  /* USER CODE END I2C2_ER_IRQn 1 */
+//}
+//
+///**
+//  * @brief This function handles SPI1 Interrupt.
+//  */
+//void SPI1_IRQHandler(void)
+//{
+//  /* USER CODE BEGIN SPI1_IRQn 0 */
+//////
+//  /* USER CODE END SPI1_IRQn 0 */
+//  HAL_SPI_IRQHandler(&hspi1);
+//  /* USER CODE BEGIN SPI1_IRQn 1 */
+//////
+//  /* USER CODE END SPI1_IRQn 1 */
+//}
+//
+///**
+//  * @brief This function handles SPI2/I2S2 Interrupt.
+//  */
+//void SPI2_IRQHandler(void)
+//{
+//  /* USER CODE BEGIN SPI2_IRQn 0 */
+////
+//  /* USER CODE END SPI2_IRQn 0 */
+//  HAL_SPI_IRQHandler(&hspi2);
+//  /* USER CODE BEGIN SPI2_IRQn 1 */
+////
+//  /* USER CODE END SPI2_IRQn 1 */
+//}
 
 /**
   * @brief This function handles USART1 Interrupt.
@@ -331,30 +360,30 @@ void IPCC_C1_TX_IRQHandler(void)
 /**
   * @brief This function handles I2C3 Event Interrupt.
   */
-void I2C3_EV_IRQHandler(void)
-{
-  /* USER CODE BEGIN I2C3_EV_IRQn 0 */
-
-  /* USER CODE END I2C3_EV_IRQn 0 */
-  HAL_I2C_EV_IRQHandler(&hi2c3);
-  /* USER CODE BEGIN I2C3_EV_IRQn 1 */
-
-  /* USER CODE END I2C3_EV_IRQn 1 */
-}
-
-/**
-  * @brief This function handles I2C3 Error Interrupt.
-  */
-void I2C3_ER_IRQHandler(void)
-{
-  /* USER CODE BEGIN I2C3_ER_IRQn 0 */
-
-  /* USER CODE END I2C3_ER_IRQn 0 */
-  HAL_I2C_ER_IRQHandler(&hi2c3);
-  /* USER CODE BEGIN I2C3_ER_IRQn 1 */
-
-  /* USER CODE END I2C3_ER_IRQn 1 */
-}
+//void I2C3_EV_IRQHandler(void)
+//{
+//  /* USER CODE BEGIN I2C3_EV_IRQn 0 */
+////
+//  /* USER CODE END I2C3_EV_IRQn 0 */
+//  HAL_I2C_EV_IRQHandler(&hi2c3);
+//  /* USER CODE BEGIN I2C3_EV_IRQn 1 */
+////
+//  /* USER CODE END I2C3_EV_IRQn 1 */
+//}
+//
+///**
+//  * @brief This function handles I2C3 Error Interrupt.
+//  */
+//void I2C3_ER_IRQHandler(void)
+//{
+//  /* USER CODE BEGIN I2C3_ER_IRQn 0 */
+////
+//  /* USER CODE END I2C3_ER_IRQn 0 */
+//  HAL_I2C_ER_IRQHandler(&hi2c3);
+//  /* USER CODE BEGIN I2C3_ER_IRQn 1 */
+////
+//  /* USER CODE END I2C3_ER_IRQn 1 */
+//}
 
 /* USER CODE BEGIN 1 */
 
